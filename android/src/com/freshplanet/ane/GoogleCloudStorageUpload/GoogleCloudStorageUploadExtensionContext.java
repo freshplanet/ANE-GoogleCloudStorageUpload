@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //
-//  Copyright 2012 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
+//  Copyright 2013 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
 //  
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,13 +21,27 @@ package com.freshplanet.ane.GoogleCloudStorageUpload;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.util.Log;
+import android.view.ViewGroup;
+
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
+import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadImageToServer;
+import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadVideoToServer;
 
-public class ExtensionContext extends FREContext
+public class GoogleCloudStorageUploadExtensionContext extends FREContext
 {
+	private static final String TAG = "[GoogleCloudStorageUploadExtensionContext]";
+	
 	@Override
-	public void dispose() {}
+	public void dispose() 
+	{
+		Log.d(TAG, "Entering dispose");
+		
+		GoogleCloudStorageUploadExtension.context = null;
+		
+		Log.d(TAG, "Exiting dispose");
+	}
 
 	@Override
 	public Map<String, FREFunction> getFunctions()
@@ -35,6 +49,8 @@ public class ExtensionContext extends FREContext
 		Map<String, FREFunction> functions = new HashMap<String, FREFunction>();
 		
 
+		functions.put("uploadImageToServer", new UploadImageToServer());
+		functions.put("uploadVideoToServer", new UploadVideoToServer());
 		
 		return functions;
 	}

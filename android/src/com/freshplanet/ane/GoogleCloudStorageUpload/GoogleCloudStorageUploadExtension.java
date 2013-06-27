@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 //
-//  Copyright 2012 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
+//  Copyright 2013 Freshplanet (http://freshplanet.com | opensource@freshplanet.com)
 //  
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -21,14 +21,14 @@ package com.freshplanet.ane.GoogleCloudStorageUpload;
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREExtension;
 
-public class Extension implements FREExtension
+public class GoogleCloudStorageUploadExtension implements FREExtension
 {
-	public static ExtensionContext context;
+	public static GoogleCloudStorageUploadExtensionContext context;
 	
 	@Override
 	public FREContext createContext(String arg0)
 	{
-		context = new ExtensionContext();
+		context = new GoogleCloudStorageUploadExtensionContext();
 		return context;
 	}
 

@@ -24,9 +24,16 @@
 
 + (void)dispatchEvent:(NSString *)eventName withInfo:(NSString *)info;
 + (void)log:(NSString *)message;
++ (void)status:(NSString*)code level:(NSString*)level;
 
 @end
 
+
+
+// upload
+DEFINE_ANE_FUNCTION(uploadImageToServer);
+DEFINE_ANE_FUNCTION(uploadVideoToServer);
+DEFINE_ANE_FUNCTION(uploadBinaryFileToServer);
 
 // ANE Setup
 void GoogleCloudStorageUploadContextInitializer(void* extData, const uint8_t* ctxType, FREContext ctx, uint32_t* numFunctionsToTest, const FRENamedFunction** functionsToSet);
