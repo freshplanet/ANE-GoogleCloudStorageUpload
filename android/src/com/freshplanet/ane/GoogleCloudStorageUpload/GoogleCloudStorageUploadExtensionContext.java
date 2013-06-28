@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 
 import com.adobe.fre.FREContext;
 import com.adobe.fre.FREFunction;
+import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadBinaryFileToServer;
 import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadImageToServer;
 import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadVideoToServer;
 
@@ -48,9 +49,9 @@ public class GoogleCloudStorageUploadExtensionContext extends FREContext
 	{
 		Map<String, FREFunction> functions = new HashMap<String, FREFunction>();
 		
-
 		functions.put("uploadImageToServer", new UploadImageToServer());
 		functions.put("uploadVideoToServer", new UploadVideoToServer());
+		functions.put("uploadBinaryFileToServer", new UploadBinaryFileToServer());
 		
 		return functions;
 	}

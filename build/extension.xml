@@ -31,8 +31,8 @@
    <platform name="Android-ARM"> 
         <applicationDeployment> 
             <nativeLibrary>libGoogleCloudStorageUpload.jar</nativeLibrary> 
-            <initializer>com.freshplanet.ane.GoogleCloudStorageUpload.Extension</initializer> 
-            <finalizer>com.freshplanet.ane.GoogleCloudStorageUpload.Extension</finalizer> 
+            <initializer>com.freshplanet.ane.GoogleCloudStorageUpload.GoogleCloudStorageUploadExtension</initializer>
+            <finalizer>com.freshplanet.ane.GoogleCloudStorageUpload.GoogleCloudStorageUploadExtension</finalizer>
         </applicationDeployment>
     </platform>
     
