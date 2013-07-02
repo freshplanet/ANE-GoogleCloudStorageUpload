@@ -32,7 +32,7 @@ import com.freshplanet.ane.GoogleCloudStorageUpload.functions.UploadVideoToServe
 
 public class GoogleCloudStorageUploadExtensionContext extends FREContext
 {
-	private static final String TAG = "[GoogleCloudStorageUploadExtensionContext]";
+	private static final String TAG = "GoogleCloudStorageUploadExtensionContext";
 	
 	@Override
 	public void dispose() 

@@ -47,7 +47,7 @@ import com.freshplanet.ane.GoogleCloudStorageUpload.GoogleCloudStorageUploadExte
 
 public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void, String> {
 
-	private static String TAG = "AirImagePicker";
+	private static String TAG = "GoogleCloudStorageUpload";
 	
 	private final HttpClient client = new DefaultHttpClient();
 	private String response = null;

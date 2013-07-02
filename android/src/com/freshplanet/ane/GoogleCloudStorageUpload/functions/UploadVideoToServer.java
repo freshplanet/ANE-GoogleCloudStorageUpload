@@ -33,7 +33,7 @@ import com.freshplanet.ane.GoogleCloudStorageUpload.tasks.UploadToGoogleCloudSto
 
 public class UploadVideoToServer implements FREFunction {
 
-	private static String TAG = "AirImagePicker";
+	private static String TAG = "GoogleCloudStorageUpload";
 	
 	@Override
 	public FREObject call(FREContext ctx, FREObject[] args) 
