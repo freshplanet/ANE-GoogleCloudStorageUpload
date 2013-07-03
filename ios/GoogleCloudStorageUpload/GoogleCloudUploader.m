@@ -118,6 +118,8 @@
     
     NSLog(@"Error: %@",error);
     
+    [GoogleCloudStorageUpload status:@"FILE_UPLOAD_ERROR" level:@""];
+    
     NSLog(@"Entering connection:didFailWithError");
 }
 

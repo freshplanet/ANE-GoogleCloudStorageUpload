@@ -50,7 +50,7 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 	private static String TAG = "AirImagePicker";
 	
 	private final HttpClient client = new DefaultHttpClient();
-	private String response = null;
+	private String response = "";
 	
 	private String mediaPath;
 	private JSONObject uploadParams;
@@ -140,21 +140,25 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				result = EntityUtils.toByteArray(httpResponse.getEntity());
 				response = new String(result, "UTF-8");
 				Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: got a response: " + response);
+				status = "FILE_UPLOAD_DONE";
 			}
 			else
 			{
+				status = "FILE_UPLOAD_ERROR";
 				Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ ERR: status code: " + statusResponse.toString());
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+			status = "FILE_UPLOAD_ERROR";
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
+			status = "FILE_UPLOAD_ERROR";
 		} catch (IOException e) {
 			e.printStackTrace();
+			status = "FILE_UPLOAD_ERROR";
 		} 
 		
 		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting doInBackground()");
-		status = "FILE_UPLOAD_DONE";
 		return response;
 	}
 
