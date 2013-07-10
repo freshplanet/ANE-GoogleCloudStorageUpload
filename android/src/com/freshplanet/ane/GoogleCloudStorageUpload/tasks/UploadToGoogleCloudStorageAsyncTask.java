@@ -19,11 +19,14 @@
 package com.freshplanet.ane.GoogleCloudStorageUpload.tasks;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.util.Iterator;
 
@@ -128,7 +131,48 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: Set content-type and content of http post");
 			// Set content-type and content of http post
 			post.setHeader("Content-Type", "multipart/form-data; boundary="+boundary);
-			post.setEntity(new ByteArrayEntity( requestBody.toByteArray() ));
+			byte[] bytes = requestBody.toByteArray();
+
+			ByteArrayEntity entity = new ByteArrayEntity(bytes){
+				@Override
+				public void writeTo(final OutputStream outstream) throws IOException 
+				{
+				    if (outstream == null) {
+				        throw new IllegalArgumentException("Output stream may not be null");
+				    }
+
+				    InputStream instream = new ByteArrayInputStream(this.content);
+
+				    try {
+				        byte[] tmp = new byte[512];
+				        int total = (int) this.content.length;
+				        int progress = 0;
+				        int increment = 0;
+				        int l;
+				        int percent;
+
+				        while ((l = instream.read(tmp)) != -1) {
+				            
+				            progress = progress + l;
+				            percent = Math.round(((float) progress / (float) total) * 100);
+
+				            if (percent > increment) {
+				                increment += 10;
+				                // update percentage here !!
+				            }
+				            Log.i(TAG,"percent "+percent);
+				            GoogleCloudStorageUploadExtension.context.dispatchStatusEventAsync("FILE_UPLOAD_PROGRESS", ""+percent);
+				            
+				            outstream.write(tmp, 0, l);
+				        }
+
+				        outstream.flush();
+				    } finally {
+				        instream.close();
+				    }
+				}
+			};
+			post.setEntity(entity);
 			
 			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: execute post.");
 			
