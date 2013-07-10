@@ -160,8 +160,8 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				                increment += 10;
 				                // update percentage here !!
 				            }
-				            Log.i(TAG,"percent "+percent);
-				            GoogleCloudStorageUploadExtension.context.dispatchStatusEventAsync("FILE_UPLOAD_PROGRESS", ""+percent);
+				            double percentage = (double) percent / 100.0;
+				            GoogleCloudStorageUploadExtension.context.dispatchStatusEventAsync("FILE_UPLOAD_PROGRESS", ""+percentage);
 				            
 				            outstream.write(tmp, 0, l);
 				        }
