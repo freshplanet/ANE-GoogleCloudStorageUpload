@@ -235,6 +235,7 @@ DEFINE_ANE_FUNCTION(uploadImageToServer)
         else
         {
             NSLog(@"File does not exits at %@", mediaURL.path);
+            [GoogleCloudStorageUpload status:@"FILE_UPLOAD_ERROR" level:@""];
         }
     }
     
@@ -358,6 +359,7 @@ DEFINE_ANE_FUNCTION(uploadBinaryFileToServer)
         else
         {
             NSLog(@"File does not exits at %@", mediaURL.path);
+            [GoogleCloudStorageUpload status:@"FILE_UPLOAD_ERROR" level:@""];
         }
     }
     else {
