@@ -138,11 +138,14 @@ typedef void(^exportToMP4Completion)(NSString* error, NSURL *toURL);
         
         exportSession.shouldOptimizeForNetworkUse = YES;
         
-        // trim the video to 30s max
-        CMTime start = CMTimeMakeWithSeconds(0.0, 1);
-        CMTime duration = CMTimeMakeWithSeconds(maxDuration, 1);
-        CMTimeRange range = CMTimeRangeMake(start, duration);
-        exportSession.timeRange = range;
+        if(maxDuration > 0)
+        {
+            // trim the video to 30s max
+            CMTime start = CMTimeMakeWithSeconds(0.0, 1);
+            CMTime duration = CMTimeMakeWithSeconds(maxDuration, 1);
+            CMTimeRange range = CMTimeRangeMake(start, duration);
+            exportSession.timeRange = range;
+        }
         
         // export the video asynchronously
         [exportSession exportAsynchronouslyWithCompletionHandler:^{
@@ -167,7 +170,7 @@ typedef void(^exportToMP4Completion)(NSString* error, NSURL *toURL);
             }
             
             // remove the original video
-            [[NSFileManager defaultManager] removeItemAtPath:[originalMediaURL path] error:NULL];
+            //[[NSFileManager defaultManager] removeItemAtPath:[originalMediaURL path] error:NULL];
         }];
     }
     NSLog(@"Exiting - exportToMP4 toURL %@", toURL);
@@ -270,7 +273,7 @@ DEFINE_ANE_FUNCTION(uploadVideoToServer)
     }
     
     FREObject maxDurationObj = argv[3];
-    double maxDuration;
+    double maxDuration = -1;
     FREGetObjectAsDouble(maxDurationObj, &maxDuration);
     
     if ( localURLPath != nil && uploadURLPath != nil && params != nil && [params count] > 0 )
