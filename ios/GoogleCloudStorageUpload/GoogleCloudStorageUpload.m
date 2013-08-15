@@ -129,10 +129,10 @@ typedef void(^exportToMP4Completion)(NSString* error, NSURL *toURL);
     AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:originalMediaURL options:nil];
     NSArray *compatiblePresets = [AVAssetExportSession exportPresetsCompatibleWithAsset:avAsset];
     
-    if ([compatiblePresets containsObject:AVAssetExportPresetLowQuality])
+    if ([compatiblePresets containsObject:AVAssetExportPresetMediumQuality])
     {
         // prepare the compression session
-        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetLowQuality];
+        AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:avAsset presetName:AVAssetExportPresetMediumQuality];
         exportSession.outputURL = toURL;
         exportSession.outputFileType = AVFileTypeMPEG4;
         
