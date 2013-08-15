@@ -353,7 +353,7 @@ DEFINE_ANE_FUNCTION(uploadBinaryFileToServer)
             NSLog(@"File exits at %@", mediaURL.path);
             
             NSURL *uploadURL = [NSURL URLWithString:uploadURLPath];
-            NSData *mediaData = [NSData dataWithContentsOfFile:uploadURLPath];
+            NSData *mediaData = [NSData dataWithContentsOfFile:mediaURL.path];
             NSLog(@"Starting upload");
             GoogleCloudUploader *uploader = [[GoogleCloudUploader alloc] init];
             [uploader startUpload:mediaData withUploadURL:uploadURL andUploadParams:params];
