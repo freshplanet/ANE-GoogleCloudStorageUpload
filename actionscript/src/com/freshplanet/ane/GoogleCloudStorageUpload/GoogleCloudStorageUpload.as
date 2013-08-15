@@ -140,7 +140,7 @@ package com.freshplanet.ane.GoogleCloudStorageUpload
 				if (_callback != null)
 				{
 					_callback("FILE_UPLOAD_DONE", event.level);
-					_callback = null;
+					//_callback = null;
 				}
 			}
 			else if (event.code == "FILE_UPLOAD_ERROR")
