@@ -27,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer; 
 import java.net.HttpURLConnection;
 import java.util.Iterator;
 
@@ -95,43 +96,61 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 			// prepare for httpPost data
 			String boundary = "b0undaryFP";
 			
-			
-			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: Get the byte[] of the media we want to upload");
-			// Get the byte[] of the media we want to upload
-			byte[] mediaBytes = toByteArray(mediaPath);
+			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: build the data");
+			// build the data
+			byte[] bytes = null;
+			byte[] imageBytes = null;
 			
 			if(isImage)
 			{
-				mediaBytes = resizeImage(mediaBytes, maxWidth, maxHeight);
-			}
-			if(isVideo)
-			{
-				if(mediaBytes.length > maxDuration * 1000 * 1000)
-					status = "FILE_TOO_BIG";
-					return null;
+				// Get the byte[] of the media we want to upload
+				imageBytes = getImageByteArray(mediaPath);
+				imageBytes = resizeImage(imageBytes, maxWidth, maxHeight);
 			}
 			
-			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: build the data");
-			// build the data 
-			ByteArrayOutputStream requestBody = new ByteArrayOutputStream();
+			//all the stuff that comes before the media bytes
+			ByteArrayOutputStream preMedia = new ByteArrayOutputStream();
 			for (@SuppressWarnings("unchecked")
 			Iterator<String> keys = uploadParams.keys(); keys.hasNext();) {
 				String key = keys.next();
 				String value = uploadParams.getString(key);
-				requestBody.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
-				requestBody.write(("Content-Disposition: form-data; name=\"%@\"\r\n\r\n%@".
+				preMedia.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
+				preMedia.write(("Content-Disposition: form-data; name=\"%@\"\r\n\r\n%@".
 						replaceFirst("%@", key).replaceFirst("%@", value)).getBytes());
 			}
-			requestBody.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
-			requestBody.write(("Content-Disposition: form-data; name=\"file\"; filename=\"file\"\r\n\r\n").getBytes());
-			requestBody.write(mediaBytes);
-			// this is the final boundary
-			requestBody.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
+			preMedia.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
+			preMedia.write(("Content-Disposition: form-data; name=\"file\"; filename=\"file\"\r\n\r\n").getBytes());
+			
+			//all the stuff that comes after the media bytes
+			ByteArrayOutputStream postMedia = new ByteArrayOutputStream();
+			postMedia.write(("\r\n--%@\r\n".replace("%@", boundary)).getBytes());
 			
 			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: Set content-type and content of http post");
 			// Set content-type and content of http post
 			post.setHeader("Content-Type", "multipart/form-data; boundary="+boundary);
-			byte[] bytes = requestBody.toByteArray();
+			
+			if(isImage && imageBytes != null)
+				bytes = createHeaderByteArrayImage(preMedia.toByteArray(),  postMedia.toByteArray(),  imageBytes);
+			else
+				bytes = createHeaderByteArrayFile(preMedia.toByteArray(),  postMedia.toByteArray(),  mediaPath);
+			
+			preMedia.close();
+			postMedia.close();
+				
+			if(isVideo)
+			{
+				if(bytes.length > maxDuration * 1000 * 1000)
+				{
+					status = "FILE_TOO_BIG";
+					return null;
+				}
+			}
+			
+			if(bytes == null)
+			{
+				status = "ERROR_CREATING_HEADER";
+				return null;
+			}
 
 			ByteArrayEntity entity = new ByteArrayEntity(bytes){
 				@Override
@@ -152,7 +171,6 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				        int percent;
 
 				        while ((l = instream.read(tmp)) != -1) {
-				            
 				            progress = progress + l;
 				            percent = Math.round(((float) progress / (float) total) * 100);
 
@@ -167,13 +185,15 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				        }
 
 				        outstream.flush();
-				    } finally {
+				    } catch (Exception e) {
+						e.printStackTrace();
+					} finally {
 				        instream.close();
 				    }
 				}
 			};
 			post.setEntity(entity);
-			
+
 			Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: execute post.");
 			
 			// execute post.
@@ -200,17 +220,21 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 		} catch (IOException e) {
 			e.printStackTrace();
 			status = "FILE_UPLOAD_ERROR";
-		} 
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = "UNKNOWN_ERROR";
+		}
+		
 		
 		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting doInBackground()");
 		return response;
 	}
 
 	public static Bitmap resizeImage(Bitmap image, int maxWidth, int maxHeight) {
-		Log.d(TAG, "[AirImagePickerExtensionContext] Entering resizeImage");
+		Log.d(TAG, "[AirImagePickerExtensionContext] Entering resizeImage - maxWidth: "+maxWidth+" - maxHeight: "+maxHeight);
 		Bitmap result = image;
 		// make sure that the image has the correct height
-		if (image.getWidth() > maxWidth || image.getHeight() > maxHeight
+		if ((image.getWidth() > maxWidth || image.getHeight() > maxHeight)
 				&& maxWidth != -1 && maxHeight != -1)
 		{
 	        float reductionFactor = Math.max(image.getWidth() / maxWidth, image.getHeight() / maxHeight);
@@ -248,12 +272,40 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting onPostExecute()");
 	}
 	
-	private byte[] toByteArray( String path )
+	private byte[] createHeaderByteArrayFile( byte[] prefix, byte[] suffix, String path )
 	{
-		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Entering toByteArray()");
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Entering createHeaderByteArrayVideo()");
 		
 		File file = new File(path);
-		int size = (int) file.length();
+		int fileLength = (int)file.length();
+		int size = fileLength + prefix.length + suffix.length;
+		byte[] bytes = new byte[size];
+		System.arraycopy(prefix, 0, bytes, 0, prefix.length);
+		
+		BufferedInputStream buf;
+		try {
+			buf = new BufferedInputStream(new FileInputStream(file));
+			buf.read(bytes, prefix.length, fileLength);
+			buf.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.arraycopy(suffix, 0, bytes, fileLength+prefix.length, suffix.length);
+			
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting createHeaderByteArrayVideo()");
+		return bytes;
+	}
+
+
+	private byte[] getImageByteArray( String path )
+	{
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Entering getImageByteArray()");
+		
+		File file = new File(path);
+		int size = (int)file.length();
 		byte[] bytes = new byte[size];
 		
 			BufferedInputStream buf;
@@ -267,9 +319,22 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				e.printStackTrace();
 			}
 			
-		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting toByteArray()");
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting getImageByteArray()");
 		return bytes;
 	}
-
+	
+	private byte[] createHeaderByteArrayImage( byte[] prefix, byte[] suffix, byte[] image )
+	{
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Entering createHeaderByteArrayImage()");
+		
+		int size = image.length + prefix.length + suffix.length;
+		ByteBuffer bytes = ByteBuffer.allocate(size);
+		bytes.put(prefix);
+		bytes.put(image);
+		bytes.put(suffix);
+			
+		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting createHeaderByteArrayImage()");
+		return bytes.array();
+	}
 
 }
