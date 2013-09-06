@@ -238,8 +238,8 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 				&& maxWidth != -1 && maxHeight != -1)
 		{
 	        float reductionFactor = Math.max(image.getWidth() / maxWidth, image.getHeight() / maxHeight);
-	        
-			result = Bitmap.createScaledBitmap( image, (int)(maxWidth/reductionFactor), (int)(maxHeight/reductionFactor), true);
+
+			result = Bitmap.createScaledBitmap( image, (int)(image.getWidth()/reductionFactor), (int)(image.getHeight()/reductionFactor), true);
 			Log.d(TAG, "[AirImagePickerExtensionContext] resized image");
 		}
 		Log.d(TAG, "[AirImagePickerExtensionContext] Exiting resizeImage");
