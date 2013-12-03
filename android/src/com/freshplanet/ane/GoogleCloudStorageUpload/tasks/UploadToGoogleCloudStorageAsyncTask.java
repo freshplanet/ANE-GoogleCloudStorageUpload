@@ -267,6 +267,10 @@ public class UploadToGoogleCloudStorageAsyncTask extends AsyncTask<String, Void,
 		
 		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] ~~~ DBG: dispatching to actionscript a StatusEvent: " + result);
 		
+		if(result == null) {
+			result = "";
+		}
+		
 		GoogleCloudStorageUploadExtension.context.dispatchStatusEventAsync(status, result);
 		
 		Log.d(TAG, "[UploadToGoogleCloudStorageAsyncTask] Exiting onPostExecute()");
