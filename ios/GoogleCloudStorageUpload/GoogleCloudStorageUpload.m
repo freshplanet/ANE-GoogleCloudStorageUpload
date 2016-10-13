@@ -86,7 +86,7 @@ static GoogleCloudStorageUpload *sharedInstance = nil;
         [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
         image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
-        NSLog(@"resized image to %f x %f", newSize.width, newSize.height);
+        [GoogleCloudStorageUpload log:[NSString stringWithFormat:@"resized image to %f x %f", newSize.width, newSize.height]];
     }
     return image;
 }
@@ -207,12 +207,12 @@ DEFINE_ANE_FUNCTION(uploadImageToServer)
     }
     
     FREObject imageMaxWidthObj = argv[3];
-    uint32_t imageMaxWidth;
-    FREGetObjectAsUint32(imageMaxWidthObj, &imageMaxWidth);
+    double imageMaxWidth;
+    FREGetObjectAsDouble(imageMaxWidthObj, &imageMaxWidth);
     
     FREObject imageMaxHeightObj = argv[4];
-    uint32_t imageMaxHeight;
-    FREGetObjectAsUint32(imageMaxHeightObj, &imageMaxHeight);
+    double imageMaxHeight;
+    FREGetObjectAsDouble(imageMaxHeightObj, &imageMaxHeight);
     
     CGSize maxDimensions = CGSizeMake(imageMaxWidth, imageMaxHeight);
     
