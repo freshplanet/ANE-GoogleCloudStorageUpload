@@ -10,6 +10,7 @@
 		114C255A177A28F10044FB68 /* GoogleCloudUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = 114C2558177A28F10044FB68 /* GoogleCloudUploader.m */; };
 		114C255B177A28F10044FB68 /* GoogleCloudUploader.h in Headers */ = {isa = PBXBuildFile; fileRef = 114C2559177A28F10044FB68 /* GoogleCloudUploader.h */; };
 		5A98569C15213BC3003A8EB0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A98569B15213BC3003A8EB0 /* Foundation.framework */; };
+		5E833A81F6309993AE1E39E8 /* libPods-GoogleCloudStorageUpload.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8D220372AC9344AECF79544E /* libPods-GoogleCloudStorageUpload.a */; };
 		FA8DA7FE16A46CB200CE1D10 /* GoogleCloudStorageUpload-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = FA8DA7FB16A46CB200CE1D10 /* GoogleCloudStorageUpload-Prefix.pch */; };
 		FA8DA7FF16A46CB200CE1D10 /* GoogleCloudStorageUpload.h in Headers */ = {isa = PBXBuildFile; fileRef = FA8DA7FC16A46CB200CE1D10 /* GoogleCloudStorageUpload.h */; };
 		FA8DA80016A46CB200CE1D10 /* GoogleCloudStorageUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8DA7FD16A46CB200CE1D10 /* GoogleCloudStorageUpload.m */; };
@@ -22,6 +23,9 @@
 		114C2559177A28F10044FB68 /* GoogleCloudUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudUploader.h; sourceTree = "<group>"; };
 		5A98569815213BC3003A8EB0 /* libGoogleCloudStorageUpload.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libGoogleCloudStorageUpload.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A98569B15213BC3003A8EB0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		8D220372AC9344AECF79544E /* libPods-GoogleCloudStorageUpload.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GoogleCloudStorageUpload.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B977D10988ABC16A7AB872B3 /* Pods-GoogleCloudStorageUpload.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoogleCloudStorageUpload.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoogleCloudStorageUpload/Pods-GoogleCloudStorageUpload.debug.xcconfig"; sourceTree = "<group>"; };
+		E194CB1AD2B76890D447F5C0 /* Pods-GoogleCloudStorageUpload.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoogleCloudStorageUpload.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoogleCloudStorageUpload/Pods-GoogleCloudStorageUpload.release.xcconfig"; sourceTree = "<group>"; };
 		FA8DA7FB16A46CB200CE1D10 /* GoogleCloudStorageUpload-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GoogleCloudStorageUpload-Prefix.pch"; sourceTree = "<group>"; };
 		FA8DA7FC16A46CB200CE1D10 /* GoogleCloudStorageUpload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleCloudStorageUpload.h; sourceTree = "<group>"; };
 		FA8DA7FD16A46CB200CE1D10 /* GoogleCloudStorageUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleCloudStorageUpload.m; sourceTree = "<group>"; };
@@ -36,18 +40,29 @@
 			files = (
 				FA8DA80216A46CD000CE1D10 /* UIKit.framework in Frameworks */,
 				5A98569C15213BC3003A8EB0 /* Foundation.framework in Frameworks */,
+				5E833A81F6309993AE1E39E8 /* libPods-GoogleCloudStorageUpload.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		535E6ACE098D70643FF611B9 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B977D10988ABC16A7AB872B3 /* Pods-GoogleCloudStorageUpload.debug.xcconfig */,
+				E194CB1AD2B76890D447F5C0 /* Pods-GoogleCloudStorageUpload.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		5A98568D15213BC2003A8EB0 = {
 			isa = PBXGroup;
 			children = (
 				FA8DA7FA16A46CB200CE1D10 /* GoogleCloudStorageUpload */,
 				5A98569A15213BC3003A8EB0 /* Frameworks */,
 				5A98569915213BC3003A8EB0 /* Products */,
+				535E6ACE098D70643FF611B9 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +79,7 @@
 			children = (
 				5A98569B15213BC3003A8EB0 /* Foundation.framework */,
 				FA8DA80116A46CD000CE1D10 /* UIKit.framework */,
+				8D220372AC9344AECF79544E /* libPods-GoogleCloudStorageUpload.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -110,6 +126,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5A9856A515213BC3003A8EB0 /* Build configuration list for PBXNativeTarget "GoogleCloudStorageUpload" */;
 			buildPhases = (
+				03FA4CF2B846B36C90DA5416 /* [CP] Check Pods Manifest.lock */,
 				5A98569415213BC3003A8EB0 /* Sources */,
 				5A98569515213BC3003A8EB0 /* Frameworks */,
 				5A98569615213BC3003A8EB0 /* Headers */,
@@ -148,6 +165,31 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		03FA4CF2B846B36C90DA5416 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GoogleCloudStorageUpload-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		5A98569415213BC3003A8EB0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -184,7 +226,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -205,7 +247,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -213,6 +255,7 @@
 		};
 		5A9856A615213BC3003A8EB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B977D10988ABC16A7AB872B3 /* Pods-GoogleCloudStorageUpload.debug.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/GoogleCloudStorageUpload.dst;
@@ -221,7 +264,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "";
 				INSTALL_PATH = ../;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = GoogleCloudStorageUpload;
@@ -232,6 +275,7 @@
 		};
 		5A9856A715213BC3003A8EB0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E194CB1AD2B76890D447F5C0 /* Pods-GoogleCloudStorageUpload.release.xcconfig */;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD)";
 				DSTROOT = /tmp/GoogleCloudStorageUpload.dst;
@@ -239,7 +283,7 @@
 				GCC_PREFIX_HEADER = "GoogleCloudStorageUpload/GoogleCloudStorageUpload-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INSTALL_PATH = ../;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = GoogleCloudStorageUpload;
